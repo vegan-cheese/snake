@@ -28,7 +28,7 @@ On **Linux**, you will need the Love AppImage binary ([download here](https://lo
 > $ sudo pacman -S love
 > ```
 > However, I still recommend the AppImage because it is what the game was tested with, and is the official download from the [Love website](https://love2d.org/).
-
+***
 ### **The Game**
 **Open a terminal/command prompt/powershell.** To install the game, just clone the repository on whichever operating system you are using:  
 ```bash
