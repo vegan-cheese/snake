@@ -1,20 +1,13 @@
+-- Called once before the frame loop
 function love.load()
-    WINDOW_DIMENSIONS = {}
-    WINDOW_DIMENSIONS.width, WINDOW_DIMENSIONS.height = love.window.getMode()
-    GRID_AREA_DIMENSIONS = {
-        width = 500,
-        height = 500
-    }
 
+    WINDOW_WIDTH, WINDOW_HEIGHT = love.window.getMode()
+
+    -- Amount of rows and columns in the grid
     GRID_SIZE = 15
 
-    GRID = {}
-    for column = 1, GRID_SIZE, 1 do
-        GRID[column] = {}
-        for row = 1, GRID_SIZE, 1 do
-            GRID[column][row] = 0
-        end
-    end
+    -- In pixels, the area that the grid squares take up in total (width and height)
+    GRID_AREA_DIMENSIONS = 500
 
     -- Each snake body part is a table of the x and y position
     local centre_position = math.floor(GRID_SIZE / 2)
@@ -23,20 +16,29 @@ function love.load()
         {x = centre_position - 1, y = centre_position},
         {x = centre_position - 2, y = centre_position}
     }
+
     -- The direction that the head is facing can be 1 (UP), 2 (RIGHT), 3 (DOWN) or 4 (LEFT)
     HEAD_DIRECTION = 2
+
     -- The amount of time between movements of the snake.
-    MOVE_TIME_SECONDS = 0.5
+    MOVE_TIME_SECONDS = 0.2
     MOVE_TIMER = 0.0
 
+    -- The starting position of the food
     FOOD_POS = {x = centre_position + 5, y = centre_position}
+
+    -- The starting score of the player
+    SCORE = 0
+
+    -- The amount that the score increases when the player eats food
+    SCORE_INCREMENT = 1
 end
 
 local function colliding_with_body_part()
     local head_pos = SNAKE_BODY_PARTS[1]
     for index, position in pairs(SNAKE_BODY_PARTS) do
         if index > 1 then -- Ensure that the collided body part is not the head
-            if  (head_pos == position) then
+            if  head_pos.x == position.x and head_pos.y == position.y then
                 return true
             end
         end
@@ -90,7 +92,7 @@ local function move_snake()
     move_snake_tail_parts(previous_snake_pos)
 end
 
-function love.keyreleased(key, scancode)
+function love.keyreleased(key)
     if key == "w" or key == "up" then
         HEAD_DIRECTION = 1
     elseif key == "d" or key == "right" then
@@ -105,14 +107,14 @@ end
 local function add_to_end_of_snake()
     local current_end_of_snake = SNAKE_BODY_PARTS[#SNAKE_BODY_PARTS]
     local current_second_to_last_segment = SNAKE_BODY_PARTS[#SNAKE_BODY_PARTS - 1]
-    if current_end_of_snake.y >= current_second_to_last_segment.y then
-        table.insert(SNAKE_BODY_PARTS, {current_end_of_snake.x, current_end_of_snake.y + 1})
-    elseif current_end_of_snake.y <= current_second_to_last_segment.y then
-        table.insert(SNAKE_BODY_PARTS, {current_end_of_snake.x, current_end_of_snake.y - 1})
-    elseif current_end_of_snake.x >= current_second_to_last_segment.x then
-        table.insert(SNAKE_BODY_PARTS, {current_end_of_snake.x + 1, current_end_of_snake.y})
-    elseif current_end_of_snake.x <= current_second_to_last_segment.x then
-        table.insert(SNAKE_BODY_PARTS, {current_end_of_snake.x - 1, current_end_of_snake.y})
+    if current_end_of_snake.y > current_second_to_last_segment.y then
+        table.insert(SNAKE_BODY_PARTS, {x = current_end_of_snake.x, y = current_end_of_snake.y + 1})
+    elseif current_end_of_snake.y < current_second_to_last_segment.y then
+        table.insert(SNAKE_BODY_PARTS, {x = current_end_of_snake.x, y = current_end_of_snake.y - 1})
+    elseif current_end_of_snake.x > current_second_to_last_segment.x then
+        table.insert(SNAKE_BODY_PARTS, {x = current_end_of_snake.x + 1, y = current_end_of_snake.y})
+    elseif current_end_of_snake.x < current_second_to_last_segment.x then
+        table.insert(SNAKE_BODY_PARTS, {x = current_end_of_snake.x - 1, y = current_end_of_snake.y})
     end
 end
 
@@ -120,24 +122,23 @@ end
 ---------UPDATE FUNCTION---------
 ---------------------------------
 function love.update()
-    if GAME_OVER == true then return end
 
     MOVE_TIMER = MOVE_TIMER + love.timer.getDelta()
     if MOVE_TIMER >= MOVE_TIME_SECONDS then
 
         move_snake()
 
+
         -- Check if the player has lost the game
         if check_for_collisions() == true then
             print("Game Over!")
-            GAME_OVER = true
-            --love.event.push("quit")
+            love.event.push("quit")
         end
 
-        if SNAKE_BODY_PARTS[1] == FOOD_POS then
+        if SNAKE_BODY_PARTS[1].x == FOOD_POS.x and SNAKE_BODY_PARTS[1].y == FOOD_POS.y then
             add_to_end_of_snake()
-            FOOD_POS.x = love.math.random(15)
-            FOOD_POS.y = love.math.random(15)
+            FOOD_POS = {x = love.math.random(GRID_SIZE), y = love.math.random(GRID_SIZE)}
+            SCORE = SCORE + SCORE_INCREMENT
         end
 
         -- Reset the timer
@@ -148,17 +149,17 @@ end
 local function draw_grid_squares()
     BORDER_WIDTH_PX = 4
     local grid_square_area = {
-        x_px = GRID_AREA_DIMENSIONS.width / GRID_SIZE,
-        y_px = GRID_AREA_DIMENSIONS.height / GRID_SIZE
+        x_px = GRID_AREA_DIMENSIONS / GRID_SIZE,
+        y_px = GRID_AREA_DIMENSIONS / GRID_SIZE
     }
 
-    for column, row in pairs(GRID) do
-        for index, value in pairs(row) do
+    for column = 1, GRID_SIZE, 1 do
+        for row = 1, GRID_SIZE, 1 do
 
 
             local grid_square_pos = {
                 x_px = grid_square_area.x_px * (column - 1) + 50 + (BORDER_WIDTH_PX / 2),
-                y_px = grid_square_area.y_px * (index - 1) + 100 + (BORDER_WIDTH_PX / 2)
+                y_px = grid_square_area.y_px * (row - 1) + 100 + (BORDER_WIDTH_PX / 2)
             }
 
             -- Draw a rectange for each grid square
@@ -177,8 +178,8 @@ end
 
 local function get_grid_square_data_from_coordinate(coordinate)
     local grid_square_area = {
-        x_px = GRID_AREA_DIMENSIONS.width / GRID_SIZE,
-        y_px = GRID_AREA_DIMENSIONS.height / GRID_SIZE
+        x_px = GRID_AREA_DIMENSIONS / GRID_SIZE,
+        y_px = GRID_AREA_DIMENSIONS / GRID_SIZE
     }
     local grid_square_pos = {
         x_px = grid_square_area.x_px * (coordinate.x - 1) + 50 + (BORDER_WIDTH_PX / 2),
@@ -187,8 +188,8 @@ local function get_grid_square_data_from_coordinate(coordinate)
     return {
         x_px = grid_square_pos.x_px,
         y_px = grid_square_pos.y_px,
-        width_px = grid_square_area.x_px,
-        height_px = grid_square_area.y_px
+        width_px = grid_square_area.x_px - BORDER_WIDTH_PX,
+        height_px = grid_square_area.y_px - BORDER_WIDTH_PX
     }
 end
 
@@ -198,7 +199,7 @@ local function draw_snake()
         or coordinate.y < GRID_SIZE or coordinate.y > 0 then
             local grid_square_data = get_grid_square_data_from_coordinate(coordinate)
             if index == 1 then
-                love.graphics.setColor(0, 0, 1)
+                love.graphics.setColor(0, 0, 0.8)
                 love.graphics.rectangle(
                     "fill",
                     grid_square_data.x_px,
@@ -206,8 +207,24 @@ local function draw_snake()
                     grid_square_data.width_px,
                     grid_square_data.height_px
                 )
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.rectangle(
+                    "line",
+                    grid_square_data.x_px,
+                    grid_square_data.y_px,
+                    grid_square_data.width_px,
+                    grid_square_data.height_px
+                )
             else
-                love.graphics.setColor(0, 1, 0)
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.rectangle(
+                    "line",
+                    grid_square_data.x_px,
+                    grid_square_data.y_px,
+                    grid_square_data.width_px,
+                    grid_square_data.height_px
+                )
+                love.graphics.setColor(0, 0, 0)
                 love.graphics.rectangle(
                     "fill",
                     grid_square_data.x_px,
@@ -230,6 +247,20 @@ local function draw_food()
         grid_square_data.width_px,
         grid_square_data.height_px
     )
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.rectangle(
+        "line",
+        grid_square_data.x_px,
+        grid_square_data.y_px,
+        grid_square_data.width_px,
+        grid_square_data.height_px
+    )
+end
+
+local function draw_score()
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.setNewFont(24)
+    love.graphics.print(tostring(SCORE), WINDOW_WIDTH / 2, 20)
 end
 
 ---------------------------------
@@ -240,4 +271,5 @@ function love.draw()
     draw_grid_squares()
     draw_food()
     draw_snake()
+    draw_score()
 end

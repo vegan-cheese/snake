@@ -4,11 +4,11 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Run Love Game",
+            "label": "Run Love Game - Linux",
             "type": "shell",
-            "command": "./.vscode/run-love.sh",
+            "command": "./run-linux.sh",
             "options": {
-                "cwd": "${workspaceFolder}"
+                "cwd": "${workspaceFolder}/run/"
             },
             "problemMatcher": [],
             "group": {
