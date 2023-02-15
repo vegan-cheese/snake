@@ -36,11 +36,7 @@ local function colliding_with_body_part()
     local head_pos = SNAKE_BODY_PARTS[1]
     for index, position in pairs(SNAKE_BODY_PARTS) do
         if index > 1 then -- Ensure that the collided body part is not the head
-            if  (position.x == head_pos.x and position.y == head_pos.y)
-             or (position.x == head_pos.x + 1 and HEAD_DIRECTION == 2)
-             or (position.x == head_pos.x - 1 and HEAD_DIRECTION == 4)
-             or (position.y == head_pos.y + 1 and HEAD_DIRECTION == 3)
-             or (position.y == head_pos.y - 1 and HEAD_DIRECTION == 1) then
+            if  (head_pos == position) then
                 return true
             end
         end
@@ -51,10 +47,10 @@ end
 local function check_for_collisions()
     local head_pos = SNAKE_BODY_PARTS[1]
 
-    if  (head_pos.y >= GRID_SIZE and HEAD_DIRECTION == 3)
-     or (head_pos.y <= 0         and HEAD_DIRECTION == 1)
-     or (head_pos.x >= GRID_SIZE and HEAD_DIRECTION == 2)
-     or (head_pos.x <= 0         and HEAD_DIRECTION == 4)
+    if  (head_pos.y > GRID_SIZE and HEAD_DIRECTION == 3)
+     or (head_pos.y == 0        and HEAD_DIRECTION == 1)
+     or (head_pos.x > GRID_SIZE and HEAD_DIRECTION == 2)
+     or (head_pos.x == 0        and HEAD_DIRECTION == 4)
      or colliding_with_body_part() then
         return true
     else
@@ -71,10 +67,17 @@ local function move_snake_tail_parts(previous_snake_pos)
     end
 end
 
+local function copy_table(tab)
+    local new_table = {}
+    for index, position in ipairs(tab) do
+        table.insert(new_table, index, {x = position.x, y = position.y})
+    end
+    return new_table
+end
+
 -- Move the snake 1 square in the direction it is facing
 local function move_snake()
-    local previous_snake_pos = SNAKE_BODY_PARTS
-
+    local previous_snake_pos = copy_table(SNAKE_BODY_PARTS)
     if HEAD_DIRECTION == 1 then
         SNAKE_BODY_PARTS[1].y = SNAKE_BODY_PARTS[1].y - 1
     elseif HEAD_DIRECTION == 2 then
