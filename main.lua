@@ -6,6 +6,9 @@ function love.load()
     -- Amount of rows and columns in the grid
     GRID_SIZE = 15
 
+    -- Speed of the snake (reciprocal is the amount of time between movements)
+    SPEED = 5
+
     -- In pixels, the area that the grid squares take up in total (width and height)
     GRID_AREA_DIMENSIONS = 500
 
@@ -21,7 +24,7 @@ function love.load()
     HEAD_DIRECTION = 2
 
     -- The amount of time between movements of the snake.
-    MOVE_TIME_SECONDS = 0.2
+    MOVE_TIME_SECONDS = 1 / SPEED
     MOVE_TIMER = 0.0
 
     -- The starting position of the food
@@ -132,6 +135,7 @@ function love.update()
         -- Check if the player has lost the game
         if check_for_collisions() == true then
             print("Game Over!")
+            print("Your final score was "..tostring(SCORE))
             love.event.push("quit")
         end
 
