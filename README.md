@@ -7,57 +7,47 @@ It is a copy of the classic game **Snake** and the objective is the same: get th
 ## How to install
 
 ### **Prerequisites**
-To run the game on **Windows** or **MacOS**, you will need the Love binary (which can be downloaded from the [Love home page](https://love2d.org/)) in the area of an environment variable so that it can be accessed from a command prompt or terminal.
+To run the game on **Windows**, you will need the Love binary (which can be downloaded from the [Love home page](https://love2d.org/)) in the area of an environment variable so that it can be accessed from a command prompt.
 
-On **Linux**, you will need the Love AppImage binary ([download here](https://love2d.org/)) in the `~/Applications` folder.
-
-> If you are on **Linux** and you want to install Love from your distribution's repository, the following are available:  
->***
-> On Ubuntu's standard repository:
-> ```bash
-> $ sudo apt install love
-> ```
-> Love also has an Ubuntu PPA, which they list on their [website](https://love2d.org/) in the download section.
->
-> On Fedora:
-> ```bash
-> $ sudo dnf install love
-> ```
-> On Arch Linux:
-> ```bash
-> $ sudo pacman -S love
-> ```
-> However, I still recommend the AppImage because it is what the game was tested with, and is the official download from the [Love website](https://love2d.org/).
+If you are on **Linux**, you can install Love from your distribution's repository:
 ***
+ On Ubuntu's standard repository:
+ ```bash
+ $ sudo apt install love
+ ```
+ Love also has an Ubuntu PPA, which they list on their [website](https://love2d.org/) in the download section.
+
+ On Fedora:
+ ```bash
+ $ sudo dnf install love
+ ```
+ On Arch Linux:
+ ```bash
+ $ sudo pacman -S love
+ ```
+
+> Note: If you want to use the Linux AppImage on [Love's website](https://love2d.org/), this is possible but there is not a script for it in the `run` folder of the project so you will have to run it yourself.
+
+***
+
 ### **The Game**
 **Open a terminal/command prompt/powershell.** To install the game, just clone the repository on whichever operating system you are using:  
 ```bash
-$ git clone https://github.com/programming-in-fm/love-snake.git
+$ git clone https://github.com/vegan-cheese/love-snake.git
 ```
-Then, `cd` into the directory:
+Then, `cd` into the project's `run` directory:
 ```bash
-$ cd love-snake
+$ cd love-snake/run
 ```
 
 #### **On Windows:**
 ```powershell
-> love .
+> ./run-windows.bat
 ```
 
-#### **On MacOS:**
+#### **On Linux:**
 ```bash
-$ love .
-```
-
-#### **On Linux (AppImage):**
-```bash
-$ cd run
 $ ./run-linux.sh
-```
-
-#### **On Linux (package):**
-```bash
-$ love .
 ```
 
 ***

@@ -15,6 +15,19 @@
                 "kind": "test",
                 "isDefault": true
             }
-        }
+        },
+	{
+	    "label": "Run Love Game - Windows",
+	    "type": "shell",
+	    "command": "./run-windows.bat",
+	    "options": {
+		"cwd": "${workspaceFolder}/run/"
+	    },
+	    "problemMatcher": [],
+	    "group": {
+		"kind": "test",
+		"isDefault": false
+	    }
+	}
     ]
 }
