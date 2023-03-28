@@ -6,9 +6,9 @@
         {
             "label": "Run Love Game - Linux",
             "type": "shell",
-            "command": "./run-linux.sh",
+            "command": "./run/run-linux.sh",
             "options": {
-                "cwd": "${workspaceFolder}/run/"
+                "cwd": "${workspaceFolder}"
             },
             "problemMatcher": [],
             "group": {
@@ -16,18 +16,18 @@
                 "isDefault": true
             }
         },
-	{
-	    "label": "Run Love Game - Windows",
-	    "type": "shell",
-	    "command": "./run-windows.bat",
-	    "options": {
-		"cwd": "${workspaceFolder}/run/"
-	    },
-	    "problemMatcher": [],
-	    "group": {
-		"kind": "test",
-		"isDefault": false
-	    }
-	}
+        {
+            "label": "Run Love Game - Windows",
+            "type": "shell",
+            "command": "./run/run-windows.bat",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            }
+        }
     ]
 }

@@ -1,3 +1,6 @@
+-- Bugs to fix:
+--     - Stop the snake from being able to reverse direction and go inside itself (and lose)
+
 -- Called once before the frame loop
 function love.load()
 
@@ -121,6 +124,28 @@ local function add_to_end_of_snake()
     end
 end
 
+local function is_food_in_snake(food_position)
+    local food_in_snake = false
+    for _, body_part in pairs(SNAKE_BODY_PARTS) do
+        if body_part.x == food_position.x and body_part.y == food_position.y then
+            food_in_snake = true
+        end
+    end
+    return food_in_snake
+end
+
+local function set_food_position()
+    -- The code will keep generating a random position until the food is not inside the snake
+    while true do
+        local test_food_position = {x = love.math.random(GRID_SIZE), y = love.math.random(GRID_SIZE)}
+        local food_is_in_snake = is_food_in_snake(test_food_position)
+        if food_is_in_snake == false then
+            FOOD_POS = {x = test_food_position.x, y = test_food_position.y}
+            break
+        end
+    end
+end --set_food_position()
+
 ---------------------------------
 ---------UPDATE FUNCTION---------
 ---------------------------------
@@ -141,7 +166,7 @@ function love.update()
 
         if SNAKE_BODY_PARTS[1].x == FOOD_POS.x and SNAKE_BODY_PARTS[1].y == FOOD_POS.y then
             add_to_end_of_snake()
-            FOOD_POS = {x = love.math.random(GRID_SIZE), y = love.math.random(GRID_SIZE)}
+            set_food_position()
             SCORE = SCORE + SCORE_INCREMENT
         end
 
