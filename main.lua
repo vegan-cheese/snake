@@ -1,6 +1,3 @@
--- Bugs to fix:
---     - Stop the snake from being able to reverse direction and go inside itself (and lose)
-
 -- Called once before the frame loop
 function love.load()
 
@@ -99,13 +96,13 @@ local function move_snake()
 end
 
 function love.keyreleased(key)
-    if key == "w" or key == "up" then
+    if (key == "w" or key == "up") and HEAD_DIRECTION ~= 3 then
         HEAD_DIRECTION = 1
-    elseif key == "d" or key == "right" then
+    elseif (key == "d" or key == "right") and HEAD_DIRECTION ~= 4 then
         HEAD_DIRECTION = 2
-    elseif key == "s" or key == "down" then
+    elseif (key == "s" or key == "down") and HEAD_DIRECTION ~= 1 then
         HEAD_DIRECTION = 3
-    elseif key == "a" or key == "left" then
+    elseif (key == "a" or key == "left") and HEAD_DIRECTION ~= 2 then
         HEAD_DIRECTION = 4
     end
 end
