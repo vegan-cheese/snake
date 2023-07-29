@@ -27,7 +27,7 @@ If you are on **Linux**, you can install Love from your distribution's repositor
 ***
 
 ### **The Game**
-**Open a terminal/powershell window (all operating systems)**
+**Open a terminal/powershell window (all operating systems)**  
 Clone the repository on whichever operating system you are using:
 ```bash
 $ git clone https://github.com/vegan-cheese/snake.git
