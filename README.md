@@ -9,14 +9,12 @@ It is a copy of the classic game **Snake** and the objective is the same: get th
 ### **Prerequisites**
 To run the game on **Windows**, you will need the Love binary (which can be downloaded from the [Love home page](https://love2d.org/)) in the area of an environment variable so that it can be accessed from a command prompt.
 
-If you are on **Linux**, you can install Love from your distribution's repository:
-***
+If you are on **Linux**, you can install Love from your distribution's repository:  
+
  On Ubuntu's standard repository:
  ```bash
  $ sudo apt install love
  ```
- Love also has an Ubuntu PPA, which they list on their [website](https://love2d.org/) in the download section.
-
  On Fedora:
  ```bash
  $ sudo dnf install love
@@ -26,12 +24,11 @@ If you are on **Linux**, you can install Love from your distribution's repositor
  $ sudo pacman -S love
  ```
 
-> Note: If you want to use the Linux AppImage on [Love's website](https://love2d.org/), this is possible but there is not a script for it in the `run` folder of the project so you will have to run it yourself.
-
 ***
 
 ### **The Game**
-**Open a terminal/powershell window.** To install the game, just clone the repository on whichever operating system you are using:  
+**Open a terminal/powershell window (all operating systems)**
+Clone the repository on whichever operating system you are using:
 ```bash
 $ git clone https://github.com/vegan-cheese/snake.git
 ```
@@ -39,15 +36,8 @@ Then, `cd` into the directory:
 ```bash
 $ cd snake
 ```
-
-#### **On Windows:**
-```powershell
-> ./run.bat
-```
-
-#### **On Linux:**
+Now run love:
 ```bash
-$ ./run.sh
+$ love .
 ```
-
 ***
