@@ -113,13 +113,13 @@ local function move_snake()
 end
 
 function love.keyreleased(key)
-    if (key == "w" or key == "up") and HEAD_DIRECTION ~= 3 then
+    if (key == "w" or key == "up") and not (SNAKE_BODY_PARTS[2].y < SNAKE_BODY_PARTS[1].y) then
         HEAD_DIRECTION = 1
-    elseif (key == "d" or key == "right") and HEAD_DIRECTION ~= 4 then
+    elseif (key == "d" or key == "right") and not (SNAKE_BODY_PARTS[2].x > SNAKE_BODY_PARTS[1].x) then
         HEAD_DIRECTION = 2
-    elseif (key == "s" or key == "down") and HEAD_DIRECTION ~= 1 then
+    elseif (key == "s" or key == "down") and not (SNAKE_BODY_PARTS[2].y > SNAKE_BODY_PARTS[1].y) then
         HEAD_DIRECTION = 3
-    elseif (key == "a" or key == "left") and HEAD_DIRECTION ~= 2 then
+    elseif (key == "a" or key == "left") and not (SNAKE_BODY_PARTS[2].x < SNAKE_BODY_PARTS[1].x) then
         HEAD_DIRECTION = 4
     end
 end
