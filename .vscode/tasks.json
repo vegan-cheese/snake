@@ -6,7 +6,7 @@
         {
             "label": "Run Love Game - Linux",
             "type": "shell",
-            "command": "./run/run-linux.sh",
+            "command": "love .",
             "options": {
                 "cwd": "${workspaceFolder}"
             },
@@ -19,7 +19,7 @@
         {
             "label": "Run Love Game - Windows",
             "type": "shell",
-            "command": "./run/run-windows.bat",
+            "command": "love .",
             "options": {
                 "cwd": "${workspaceFolder}"
             },
